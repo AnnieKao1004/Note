@@ -1,6 +1,6 @@
 # Override validate message
 1.  Global
-```javasciprt
+```javascript
 const validateMessages = {
   required: "'${name}' is Required!",
   // ...
@@ -14,7 +14,7 @@ const validateMessages = {
 `rules = Rule []`  
 `type Rule = RuleConfig | (Form: FormInstance) => RuleConfig;`
 
-```javasciprt
+```javascript
 // Rule = RuleConfig
 
 <Form.Item
@@ -26,7 +26,7 @@ const validateMessages = {
   <Input />
 </Form.Item>
 ```
-```javasciprt
+```javascript
 // Rule = (Form: FormInstance) => RuleConfig
 // Custom validator, check confirm password value === password value
 
