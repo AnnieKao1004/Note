@@ -123,3 +123,16 @@ const cellRenderer = ({cellData, rowData, key, parent, rowIndex, style, columnIn
 </Table>
 ````
 
+## Issue
+Expected behavior: 從 detil page 按下返回按鈕回到 `Table` 的畫面時，希望畫面自動下滑至原先的位置高度
+
+Actual behavior: `window.scrollTo(x, y)` is not working in `useEffect` when using `Table` with `WinodwScrolle`
+- 嘗試另外設計一個 `button` 在頁面render完後，以手動 trigger `window.scrollTo(x, y)` 發現下滑功能正常。
+- `console.log` 查看 `document.body.scrollHeight` 發現在 component `render` 完成後， `useEffect` 中讀到的值跟 `window.innerHeight` 相同 (意即是不可滑動的狀態，`Table`高度還沒長出來 ?)
+- 嘗試用 `setTimeout` delay 100ms 後再執行`window.scrollTo(x, y)`發現就可以正常下滑了 (此時的 `document.body.scrollHeight` 也已經被展開，大於 `window.innerHeight`)
+- 即使把 `setTimeout` delay 時間改為 0，也同樣可以運作 (`setTimeout` 時間設為 0 不代表馬上執行 `callback`，而是代表 `callback` 會被堆到 Event Queue，等 main thread 清空之後就會被執行)
+- 原因是當 page rendering 和 呼叫 `window.scrollTo(x, y)` 的時候，會產生競爭，In effect, **running JavaScript blocks the updating of the DOM**，因為 `DOM` 還來不及 update，所以 `window.scrollTo(x, y)` 也無法發揮作用 (因此時 `document.body.scrollHeight` === `window.innerHeight`)
+- 簡單來說，解決方法是先讓 page render 完成，再執行其他的 js function
+- 猜測只發生在用 `react-virtualized` 的情況下也許是因為還需要花資源計算 `Table` 高度
+- 發現有個東西叫 `window.requestAnimationFrame`，此函數接受一個 `callback function`，一般用在優化動畫。機制是 browser 會在下次進行 repaint 之前，根據本身的效率，計算出算好的時機來執行這個 `callback function`。功能類似`setTimeout` / `setInterval`，但不須自己定義頻率
+
