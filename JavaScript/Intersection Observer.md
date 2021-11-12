@@ -46,5 +46,6 @@
 
 ### Reference
 - https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+- https://developers.google.com/web/updates/2017/09/sticky-headers
 - https://www.letswrite.tw/intersection-oserver-basic/
 - https://www.letswrite.tw/intersection-oserver-demo/
