@@ -42,3 +42,4 @@
 
 ### Examples
 - [Image lazyload](https://codepen.io/AnnieYC/pen/WNEKzao?editors=1011)
+- [Infinite Scrolling](https://codepen.io/AnnieYC/pen/XWaPdGj?editors=1111)
